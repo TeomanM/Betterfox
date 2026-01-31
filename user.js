@@ -94,7 +94,7 @@ user_pref("browser.privatebrowsing.resetPBM.enabled", true);
 user_pref("browser.urlbar.trimHttps", true);
 user_pref("browser.urlbar.untrimOnUserInteraction.featureGate", true);
 user_pref("browser.search.separatePrivateDefault.ui.enabled", true);
-user_pref("browser.search.suggest.enabled", false);
+user_pref("browser.search.suggest.enabled", true);
 user_pref("browser.urlbar.quicksuggest.enabled", false);
 user_pref("browser.urlbar.groupLabels.enabled", false);
 user_pref("browser.formfill.enable", false);
@@ -223,6 +223,8 @@ user_pref("layout.word_select.eat_space_to_next_word", false);
 // visit https://github.com/yokoffing/Betterfox/wiki/Optional-Hardening
 // Enter your personal overrides below this line:
 
+// PREF: show weather on New Tab page
+user_pref("browser.newtabpage.activity-stream.showWeather", true);
 
 
 /****************************************************************************
