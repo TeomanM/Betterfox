@@ -3,7 +3,7 @@
  * Securefox                                                                *
  * "Natura non contristatur"                                                *     
  * priority: provide sensible security and privacy                          *
- * version: 148                                                             *
+ * version: 152                                                             *
  * url: https://github.com/yokoffing/Betterfox                              *
  * credit: Most prefs are reproduced and adapted from the arkenfox project  *
  * credit urL: https://github.com/arkenfox/user.js                          *
@@ -46,15 +46,20 @@ user_pref("browser.contentblocking.category", "strict"); // [HIDDEN PREF]
 // Opener and redirect heuristics are granted for 30 days, see [3]
 // [1] https://blog.mozilla.org/security/2021/07/13/smartblock-v2/
 // [2] https://hg.mozilla.org/mozilla-central/rev/e5483fd469ab#l4.12
-// [3] https://developer.mozilla.org/docs/Web/Privacy/State_Partitioning#storage_access_heuristics
-    // user_pref("privacy.antitracking.enableWebcompat", false);
+// [3] https://developer.mozilla.org/docs/Web/Privacy/Guides/State_Partitioning#storage_access_heuristics
+//user_pref("privacy.antitracking.enableWebcompat", false);
+    //user_pref("privacy.restrict3rdpartystorage.heuristic.navigation", false);
+    //user_pref("privacy.restrict3rdpartystorage.heuristic.opened_window_after_interaction", false);
+        //user_pref("privacy.restrict3rdpartystorage.heuristic.recently_visited", false); // DEFAULT
+        //user_pref("privacy.restrict3rdpartystorage.heuristic.redirect", false); // DEFAULT
+        //user_pref("privacy.restrict3rdpartystorage.heuristic.window_open", false); // DEFAULT
 
 // PREF: set ETP Strict/Custom exception lists (FF141+)
 // [SETTING] Options>Privacy & Security>Enhanced Tracking Protection>Strict/Custom>Fix major [baseline] | minor [convenience]
 // [1] https://support.mozilla.org/en-US/kb/manage-enhanced-tracking-protection-exceptions
 // [2] https://etp-exceptions.mozilla.org/
-// user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true); // [DEFAULT: true]
-// user_pref("privacy.trackingprotection.allow_list.convenience.enabled", true); // [DEFAULT: true]
+//user_pref("privacy.trackingprotection.allow_list.baseline.enabled", true); // [DEFAULT: true]
+//user_pref("privacy.trackingprotection.allow_list.convenience.enabled", true); // [DEFAULT: true]
 
 // PREF: query stripping
 // Currently uses a small list [1]
@@ -500,8 +505,8 @@ user_pref("browser.sessionstore.interval", 60000); // 1 minute; default=15000 (1
    //user_pref("privacy.cpd.siteSettings", false);
    //user_pref("privacy.clearHistory.siteSettings", false);
 
-// PREF: purge session icon in Private Browsing windows
-user_pref("browser.privatebrowsing.resetPBM.enabled", true);
+// PREF: purge session icon in Private Browsing windows [FF152+]
+//user_pref("browser.privatebrowsing.resetPBM.enabled", true); // [DEFAULT FF152+]
 
 // PREF: delete files downloaded in Private Browsing when all private windows are closed
 // When downloading a file in private browsing mode, the user will be prompted
@@ -689,45 +694,6 @@ user_pref("network.prefetch-next", false);
 // [NOTE] When 0, this is limited by "network.http.speculative-parallel-limit".
 //user_pref("network.early-hints.preconnect.enabled", true);
 //user_pref("network.early-hints.preconnect.max_connections", 10); // DEFAULT
-
-// PREF: Network Predictor (NP)
-// When enabled, it trains and uses Firefox's algorithm to preload page resource
-// by tracking past page resources. It uses a local file (history) of needed images,
-// scripts, etc. to request them preemptively when navigating.
-// [NOTE] By default, it only preconnects DNS, TCP, and SSL handshakes.
-// No data sends until clicking. With "network.predictor.enable-prefetch" enabled,
-// it also performs prefetches.
-// [1] https://wiki.mozilla.org/Privacy/Reviews/Necko
-// [2] https://www.ghacks.net/2014/05/11/seer-disable-firefox/
-// [3] https://github.com/dillbyrne/random-agent-spoofer/issues/238#issuecomment-110214518
-// [4] https://www.igvita.com/posa/high-performance-networking-in-google-chrome/#predictor
-//user_pref("network.predictor.enabled", false); // [DEFAULT: false FF144+]
-
-// PREF: Network Predictor fetch for resources ahead of time
-// Prefetch page resources based on past user behavior.
-//user_pref("network.predictor.enable-prefetch", false); // [FF48+] [DEFAULT: false]
-
-// PREF: make Network Predictor active when hovering over links
-// When hovering over links, Network Predictor uses past resource history to
-// preemptively request what will likely be needed instead of waiting for the document.
-// Predictive connections automatically open when hovering over links to speed up
-// loading, starting some work in advance.
-//user_pref("network.predictor.enable-hover-on-ssl", false); // DEFAULT
-
-// PREF: assign Network Predictor confidence levels
-// [NOTE] Keep in mind that Network Predictor must LEARN your browsing habits.
-// Editing these lower will cause more speculative connections to occur,
-// which reduces accuracy over time and has privacy implications.
-//user_pref("network.predictor.preresolve-min-confidence", 60); // DEFAULT
-//user_pref("network.predictor.preconnect-min-confidence", 90); // DEFAULT
-//user_pref("network.predictor.prefetch-min-confidence", 100); // DEFAULT
-
-// PREF: other Network Predictor values
-// [NOTE] Keep in mmind that Network Predictor must LEARN your browsing habits.
-//user_pref("network.predictor.prefetch-force-valid-for", 10); // DEFAULT; how long prefetched resources are considered valid and usable (in seconds) for the prediction modeling
-//user_pref("network.predictor.prefetch-rolling-load-count", 10); // DEFAULT; the maximum number of resources that Firefox will prefetch in memory at one time based on prediction modeling
-//user_pref("network.predictor.max-resources-per-entry", 250); // default=100
-//user_pref("network.predictor.max-uri-length", 1000); // default=500
 
 /******************************************************************************
  * SECTION: SEARCH / URL BAR                                                 *
@@ -1106,7 +1072,14 @@ user_pref("editor.truncate_user_pastes", false);
 
 // PREF: disable automatic authentication on Microsoft sites [WINDOWS]
 // [1] https://bugzilla.mozilla.org/buglist.cgi?bug_id=1695693,1719301
-//user_pref("network.http.windows-sso.enabled", false);
+//user_pref("network.http.windows-sso.enabled", false); // DEFAULT
+
+// PREF: disable passkeys
+//user_pref("security.webauth.webauthn", false);
+
+// PREF: enforce no direct attestation in passkeys [FF144+]
+// [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1981587 ***/
+//user_pref("security.webauthn.always_allow_direct_attestation", false); // [DEFAULT: false]
 
 /****************************************************************************
  * SECTION: ADDRESS + CREDIT CARD MANAGER                                   *
@@ -1294,7 +1267,7 @@ user_pref("privacy.userContext.ui.enabled", true);
     //user_pref("browser.eme.ui.enabled", false);
 
 /******************************************************************************
- * SECTION: JIT                                                              *
+ * SECTION: JIT & WASM                                                        *
 ******************************************************************************/
 // PREF: Just-In-Time Compilation
 // Around half of zero-day exploits are directly related to "just in time"
@@ -1303,8 +1276,7 @@ user_pref("privacy.userContext.ui.enabled", true);
 // [1] https://microsoftedge.github.io/edgevr/posts/Super-Duper-Secure-Mode/
 // [2] https://www.youtube.com/watch?v=i7qlZeDt9o4
 
-// PREF: JavaScript JIT
-// PREF: disable Ion and baseline JIT to harden against JS exploits
+// PREF: Ion and Baseline JIT
 // [NOTE] When both Ion and JIT are disabled, and trustedprincipals
 // is enabled, then Ion can still be used by extensions [4].
 // Tor Browser doesn't even ship with these disabled by default.
@@ -1314,31 +1286,40 @@ user_pref("privacy.userContext.ui.enabled", true);
 // [4] https://bugzilla.mozilla.org/show_bug.cgi?id=1599226
 // [5] https://wiki.mozilla.org/IonMonkey
 // [6] https://github.com/arkenfox/user.js/issues/1791#issuecomment-1891273681
-//user_pref("javascript.options.baselinejit", false);
+//user_pref("javascript.options.baselinejit", false); // DO NOT TOUCH
 //user_pref("javascript.options.ion", false);
-//user_pref("javascript.options.jit_trustedprincipals", false);
+//user_pref("javascript.options.jit_trustedprincipals", true); // HIDDEN PREF
+
+// PREF: Blinterp (JIT-like)
+// You do not need to touch blinterp unless you want to go even slower
+// than the Baseline JIT (which I do not recommend).
+//user_pref("javascript.options.blinterp", false);
 
 // PREF: WebAssembly JIT [FF52+]
 // Vulnerabilities [1] have increasingly been found, including those known and fixed
 // in native programs years ago [2]. WASM has powerful low-level access, making
 // certain attacks (brute-force) and vulnerabilities more possible.
+// trustedprincipals: This controls whether WebAssembly is allowed in "privileged" contexts
+// (like your extensions or internal browser scripts).
 // [STATS] ~0.2% of websites, about half of which are for cryptomining / malvertising [2][3]
 // [1] https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=wasm
 // [2] https://spectrum.ieee.org/tech-talk/telecom/security/more-worries-over-the-security-of-web-assembly
 // [3] https://www.zdnet.com/article/half-of-the-websites-using-webassembly-use-it-for-malicious-purposes
 //user_pref("javascript.options.wasm", false);
     //user_pref("javascript.options.wasm_trustedprincipals", false);
-    //user_pref("javascript.options.wasm_baselinejit", false);
+    //user_pref("javascript.options.wasm_baselinejit", true); // DO NOT TOUCH
     //user_pref("javascript.options.wasm_optimizingjit", false);
 
 // PREF: Asm.js JIT [FF22+]
+// Asm.js is essentially the "ancestor" of WebAssembly. It was a strict subset of JavaScript
+// designed to allow browsers to pre-compile code into highly efficient machine instructions.
+// However, WebAssembly was created specifically to replace Asm.js and has done so almost entirely.
+// Disabling Asm.js removes the "legacy" risk surface without affecting your ability to run modern WebAssembly sites.
 // [1] http://asmjs.org/
 // [2] https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=asm.js
 // [3] https://rh0dev.github.io/blog/2017/the-return-of-the-jit/
-//user_pref("javascript.options.asmjs", false);
-
-// PREF: Blinterp (JIT-like)
-//user_pref("javascript.options.blinterp", false);
+// [4] https://github.com/rh0dev/slides/blob/master/OffensiveCon2018_From_Assembly_to_JavaScript_and_back.pdf
+//user_pref("javascript.options.asmjs", false); // DEFAULT
      
 /******************************************************************************
  * SECTION: VARIOUS                                                          *
@@ -1374,6 +1355,31 @@ user_pref("privacy.userContext.ui.enabled", true);
 //user_pref("pdfjs.disabled", false); // [DEFAULT: false]
 user_pref("pdfjs.enableScripting", false); // [FF86+]
 
+// PREF: mitigate FROST attack
+// [1] https://github.com/yokoffing/Betterfox/issues/486
+//user_pref("dom.fs.enabled=false", false);
+//user_pref("dom.fs.writable_file_stream.enabled", false);
+
+// PREF: disable BITS (Background Intelligent Transfer Service) for updates [WINDOWS]
+// BITS is a Windows service that downloads files in the background using idle
+// network capacity. Firefox uses BITS to fetch updates, but two known bugs
+// make this option risky on Windows.
+// Firefox can flood the BITS job queue until it hits the default limit of 60
+// jobs, and once that happens, BITS stops working correctly. Windows can't
+// clear the backlog on its own, so users must clear the queue manually
+// through the command line.
+// Firefox also fills the C:\ProgramData\Mozilla folder with leftover temp files
+// whenever this pref stays enabled.
+// [NOTE] Neither bug affects browsing directly, but Firefox runs for hours at
+// a stretch on most systems, so updates can just as easily download over the
+// regular network path instead of BITS.
+// [1] https://bugzilla.mozilla.org/show_bug.cgi?id=1856462 (queue overflow bug,
+// marked fixed, but still reported as of mid-2026)
+// [2] https://bugzilla.mozilla.org/show_bug.cgi?id=1879383 (leftover temp files)
+// [3] https://www.reddit.com/r/firefox/comments/1oglolg/bug_windows_bitsjob/
+// (recent report of the queue overflow bug)
+//user_pref("app.update.BITS.enabled", false); // [WINDOWS]
+
  /******************************************************************************
  * SECTION: SAFE BROWSING (SB)                                               *
 ******************************************************************************/
@@ -1388,6 +1394,11 @@ user_pref("pdfjs.enableScripting", false); // [FF86+]
 // [4] https://educatedguesswork.org/posts/safe-browsing-privacy/
 // [5] https://www.google.com/chrome/privacy/whitepaper.html#malware
 // [6] https://security.googleblog.com/2022/08/how-hash-based-safe-browsing-works-in.html
+
+// [FF147+] Firefox now supports the Safe Browsing V5 protocol and has migrated
+// from Safe Browsing V4 to the local list mode of Safe Browsing V5 protocol.
+// [1] https://developers.google.com/safe-browsing/reference
+// [2] https://developers.google.com/safe-browsing/reference/Local.List.Mode
 
 // PREF: Safe Browsing
 // [WARNING] Be sure to have alternate security measures if you disable SB! Adblockers do not count!
@@ -1654,7 +1665,6 @@ user_pref("browser.tabs.crashReporting.sendReport", false);
 
 // PREF: assorted telemetry
 // [NOTE] Shouldn't be needed for user.js, but browser forks may want to disable these prefs.
-//user_pref("doh-rollout.disable-heuristics", true); // ensure DoH doesn't get enabled automatically
 //user_pref("dom.security.unexpected_system_load_telemetry_enabled", false);
 //user_pref("messaging-system.rsexperimentloader.enabled", false);
 //user_pref("network.trr.confirmation_telemetry_enabled", false);
